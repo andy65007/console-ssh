@@ -1,6 +1,7 @@
 param(
     [string]$DotnetExecutable = "dotnet",
-    [string]$Configuration = "Release"
+    [string]$Configuration = "Release",
+    [string]$Version = "1.0.1"
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,6 +11,10 @@ $distRoot = Join-Path $repoRoot "dist"
 $outputDirectory = Join-Path $distRoot "ConsoleSsh"
 $launcherSource = Join-Path $repoRoot "src\ConsoleSsh\launcher\launcher.c"
 $launcherBinary = Join-Path $repoRoot "src\ConsoleSsh\launcher\console-ssh-launcher.exe"
+
+if ([string]::IsNullOrWhiteSpace($Version)) {
+    throw "Version must not be empty."
+}
 
 $resolvedDistRoot = [System.IO.Path]::GetFullPath($distRoot)
 if (-not $resolvedDistRoot.StartsWith([System.IO.Path]::GetFullPath($repoRoot), [System.StringComparison]::OrdinalIgnoreCase)) {
@@ -42,7 +47,7 @@ $nugetConfig = Join-Path $repoRoot "NuGet.Config"
 if ($LASTEXITCODE -ne 0) {
     throw "dotnet restore failed."
 }
-& $DotnetExecutable publish $project -c $Configuration -o $outputDirectory --nologo
+& $DotnetExecutable publish $project -c $Configuration -o $outputDirectory -p:Version=$Version --nologo
 if ($LASTEXITCODE -ne 0) {
     throw "dotnet publish failed."
 }
@@ -81,7 +86,7 @@ Copy-Item -LiteralPath (Join-Path $repoRoot "scripts\uninstall.ps1") -Destinatio
 
 Get-ChildItem -LiteralPath $distRoot -Filter "console-ssh-*-win-x64.zip" -File -ErrorAction SilentlyContinue |
     Remove-Item -Force
-$archive = Join-Path $distRoot "console-ssh-1.0.1-win-x64.zip"
+$archive = Join-Path $distRoot "console-ssh-$Version-win-x64.zip"
 Compress-Archive -Path (Join-Path $outputDirectory "*") -DestinationPath $archive -CompressionLevel Optimal
-Write-Host "Build complete: $outputDirectory"
+Write-Host "Build complete: $outputDirectory (version $Version)"
 Write-Host "Archive: $archive"

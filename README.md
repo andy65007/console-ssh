@@ -1,5 +1,7 @@
 # Console SSH
 
+[![build](https://github.com/andy65007/console-ssh/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/andy65007/console-ssh/actions/workflows/build.yml)
+
 一个 Windows 后台服务：远程用户通过 SSH 登录后，可以选择本机已经打开的经典控制台窗口（例如 `cmd.exe`），查看其屏幕并注入键盘输入。
 
 ## 文档
@@ -66,12 +68,16 @@ Windows 服务本身运行在 Session 0，不能直接访问用户桌面，所�
 .\scripts\build.ps1 -DotnetExecutable "C:\path\to\dotnet.exe"
 ```
 
-输出为 `dist\ConsoleSsh` 和 `dist\console-ssh-1.0.0-win-x64.zip`。发布目录包含：
+输出为 `dist\ConsoleSsh` 和 `dist\console-ssh-1.0.1-win-x64.zip`。发布目录包含：
 
 - 应用本体
 - 便携版 OpenSSH
 - 最小 .NET 运行时
 - `console-ssh-launcher.exe`，用于在没有系统级 .NET 运行时的情况下启动应用
+
+GitHub Actions 会在 `main` 分支和 Pull Request 上执行 Windows 构建并上传
+`console-ssh-win-x64-*` 产物；推送 `v*` 标签时还会自动创建或更新 GitHub
+Release，并附加对应版本的 zip 包。
 
 ## 安装
 

@@ -8,7 +8,8 @@ namespace ConsoleSsh;
 /// </summary>
 internal static class Program
 {
-    private const string Version = "1.0.1";
+    private static string Version =>
+        typeof(Program).Assembly.GetName().Version?.ToString(3) ?? "1.0.1";
 
     public static int Main(string[] args)
     {
