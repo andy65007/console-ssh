@@ -7,6 +7,9 @@ dist/
 .appdata/
 .chrome-debug/
 .git-push/
+.tools/
+.ghconfig/
+.gitconfig-push
 codex-session-*.md
 buildtest/
 *.user
