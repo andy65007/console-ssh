@@ -1,0 +1,13 @@
+bin/
+obj/
+dist/
+.test/
+.dotnet-home/
+.nuget-packages/
+.appdata/
+.chrome-debug/
+.git-push/
+codex-session-*.md
+buildtest/
+*.user
+*.suo
